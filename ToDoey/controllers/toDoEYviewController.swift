@@ -19,7 +19,7 @@ class ToDoViewController: UITableViewController {
         super.viewDidLoad()
         
         
-        // Do any additional setup after loading the view, typically from a nib.
+        // Do any additional setup after loading the view, typically from a nib.fsafdasfasgd122123412314231431242
         let newItem = Item()
         newItem.title = "Find Mike"
         itemArray.append(newItem)
@@ -68,7 +68,6 @@ class ToDoViewController: UITableViewController {
         saveItem()
         
         
-//        tableView.reloadData()
         tableView.deselectRow(at: indexPath, animated: true)
         
         itemArray[indexPath.row].done = !itemArray[indexPath.row].done
@@ -122,6 +121,8 @@ class ToDoViewController: UITableViewController {
             print("error")
             
         }
+        tableView.reloadData()
+
     }
 }
 
