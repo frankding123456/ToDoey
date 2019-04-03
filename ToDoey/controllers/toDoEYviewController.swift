@@ -18,19 +18,19 @@ class ToDoViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        loadItem()
         // Do any additional setup after loading the view, typically from a nib.fsafdasfasgd122123412314231431242
-        let newItem = Item()
-        newItem.title = "Find Mike"
-        itemArray.append(newItem)
-        
-        let newItem1 = Item()
-        newItem1.title = "Buy Eggos"
-        itemArray.append(newItem1)
-        
-        let newItem2 = Item()
-        newItem2.title = "Destroy Demogormon"
-        itemArray.append(newItem2)
+//        let newItem = Item()
+//        newItem.title = "Find Mike"
+//        itemArray.append(newItem)
+//
+//        let newItem1 = Item()
+//        newItem1.title = "Buy Eggos"
+//        itemArray.append(newItem1)
+//
+//        let newItem2 = Item()
+//        newItem2.title = "Destroy Demogormon"
+//        itemArray.append(newItem2)
         
       
         
@@ -123,6 +123,18 @@ class ToDoViewController: UITableViewController {
         }
         tableView.reloadData()
 
+    }
+    
+    func loadItem () {
+        if let data = try? Data(contentsOf: dataFilePath!){
+            let decoder = PropertyListDecoder()
+            do{
+                itemArray = try decoder.decode([Item].self, from: data)
+            }catch{
+                print("\(error)")
+            }
+            
+        }
     }
 }
 
