@@ -139,6 +139,25 @@ class ToDoViewController: UITableViewController {
             }
 
         }
+    
     }
+
+extension ToDoViewController : UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let request : NSFetchRequest <Item> = Item.fetchRequest()
+        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        request.predicate = predicate
+        let sortDescriptr = NSSortDescriptor(key: "title", ascending: true)
+        request.sortDescriptors = [sortDescriptr]
+        do{
+            itemArray = try context.fetch(request)
+            
+        }catch{
+            print("\(error)")
+        }
+        tableView.reloadData()
+        
+    }
+}
 
 
