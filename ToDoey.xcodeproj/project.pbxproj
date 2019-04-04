@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CE81AADD2254C72900FA1F92 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE81AADB2254C72900FA1F92 /* DataModel.xcdatamodeld */; };
+		CE81AB082256C68500FA1F92 /* CategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE81AB072256C68500FA1F92 /* CategoryTableViewController.swift */; };
 		CEB55D6E22530B5500D99CA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB55D6D22530B5500D99CA5 /* AppDelegate.swift */; };
 		CEB55D7022530B5500D99CA5 /* toDoEYviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB55D6F22530B5500D99CA5 /* toDoEYviewController.swift */; };
 		CEB55D7322530B5500D99CA5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEB55D7122530B5500D99CA5 /* Main.storyboard */; };
@@ -17,6 +18,7 @@
 
 /* Begin PBXFileReference section */
 		CE81AADC2254C72900FA1F92 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		CE81AB072256C68500FA1F92 /* CategoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewController.swift; sourceTree = "<group>"; };
 		CEB55D6A22530B5400D99CA5 /* ToDoey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEB55D6D22530B5500D99CA5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CEB55D6F22530B5500D99CA5 /* toDoEYviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = toDoEYviewController.swift; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 		CEB55D8222542AE100D99CA5 /* controllers */ = {
 			isa = PBXGroup;
 			children = (
+				CE81AB072256C68500FA1F92 /* CategoryTableViewController.swift */,
 				CEB55D6F22530B5500D99CA5 /* toDoEYviewController.swift */,
 			);
 			path = controllers;
@@ -171,6 +174,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEB55D7022530B5500D99CA5 /* toDoEYviewController.swift in Sources */,
+				CE81AB082256C68500FA1F92 /* CategoryTableViewController.swift in Sources */,
 				CE81AADD2254C72900FA1F92 /* DataModel.xcdatamodeld in Sources */,
 				CEB55D6E22530B5500D99CA5 /* AppDelegate.swift in Sources */,
 			);

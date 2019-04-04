@@ -111,7 +111,7 @@ extension ToDoViewController : UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let request : NSFetchRequest <Item> = Item.fetchRequest()
         request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
-        
+
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         loadItem(with: request)
         //        do{
@@ -120,6 +120,14 @@ extension ToDoViewController : UISearchBarDelegate {
         //        }catch{
         //            print("\(error)")
         //        }
-        
+
+    }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0{
+            loadItem()
+            DispatchQueue.main.async {
+            searchBar.resignFirstResponder()
+            }
+        }
     }
 }
