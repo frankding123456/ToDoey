@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 class ToDoViewController: UITableViewController {
     
-   
+    
     var itemArray = [Item]()
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -20,34 +20,19 @@ class ToDoViewController: UITableViewController {
         super.viewDidLoad()
         
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+        //        let request : NSFetchRequest<Item> = Item.fetchRequest()
         
         loadItem()
-        // Do any additional setup after loading the view, typically from a nib.fsafdasfasgd122123412314231431242
-//        let newItem = Item()
-//        newItem.title = "Find Mike"
-//        itemArray.append(newItem)
-//
-//        let newItem1 = Item()
-//        newItem1.title = "Buy Eggos"
-//        itemArray.append(newItem1)
-//
-//        let newItem2 = Item()
-//        newItem2.title = "Destroy Demogormon"
-//        itemArray.append(newItem2)
         
-      
-        
-//        if let items = defaults.array(forKey: "TodoList") as? [Item]{
-//            itemArray = items
         
     }
-
+    
     //TODO: MARK--tableView datasource methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemArray.count
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-       
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
         
         let item = itemArray[indexPath.row]
@@ -56,11 +41,6 @@ class ToDoViewController: UITableViewController {
         
         cell.accessoryType = item.done ?.checkmark:.none
         
-//        if item.done == true {
-//            cell.accessoryType = .checkmark
-//        }else{
-//            cell.accessoryType = .none
-//        }
         return cell
     }
     
@@ -70,30 +50,15 @@ class ToDoViewController: UITableViewController {
         
         saveItem()
         
-        
-//        context.delete(itemArray[indexPath.row])
-//        itemArray.remove(at: indexPath.row)
         tableView.deselectRow(at: indexPath, animated: true)
         
         itemArray[indexPath.row].done = !itemArray[indexPath.row].done
         
-//        if itemArray[indexPath.row].done == false {
-//            itemArray[indexPath.row].done = true
-//        }else{
-//            itemArray[indexPath.row].done = false
-//        }
         
         
-//        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark{
-//            tableView.cellForRow(at: indexPath)?.accessoryType = .none
-//        }else{
-//            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-//
-//        }
-
     }
     //TODO: MARK-Add new items
-   
+    
     @IBAction func addPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField ()
         let alert = UIAlertController(title: "Add New Todoey Item", message: "", preferredStyle: .alert)
@@ -126,29 +91,11 @@ class ToDoViewController: UITableViewController {
             
         }
         tableView.reloadData()
-
+        
     }
     
-    func loadItem () {
-        let request : NSFetchRequest<Item> = Item.fetchRequest()
-            do{
-                itemArray = try context.fetch(request)
-               
-            }catch{
-                print("\(error)")
-            }
-
-        }
-    
-    }
-
-extension ToDoViewController : UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let request : NSFetchRequest <Item> = Item.fetchRequest()
-        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
-        request.predicate = predicate
-        let sortDescriptr = NSSortDescriptor(key: "title", ascending: true)
-        request.sortDescriptors = [sortDescriptr]
+    func loadItem (with request : NSFetchRequest<Item> = Item.fetchRequest()) {
+        //        let request : NSFetchRequest<Item> = Item.fetchRequest()
         do{
             itemArray = try context.fetch(request)
             
@@ -160,4 +107,19 @@ extension ToDoViewController : UISearchBarDelegate {
     }
 }
 
-
+extension ToDoViewController : UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let request : NSFetchRequest <Item> = Item.fetchRequest()
+        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        loadItem(with: request)
+        //        do{
+        //            itemArray = try context.fetch(request)
+        //
+        //        }catch{
+        //            print("\(error)")
+        //        }
+        
+    }
+}
