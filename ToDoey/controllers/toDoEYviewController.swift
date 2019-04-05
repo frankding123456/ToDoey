@@ -10,7 +10,11 @@ import UIKit
 import CoreData
 class ToDoViewController: UITableViewController {
     
-    
+    var selectedCategory : Category? {
+        didSet{
+            loadItem()
+        }
+    }
     var itemArray = [Item]()
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -22,7 +26,6 @@ class ToDoViewController: UITableViewController {
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         //        let request : NSFetchRequest<Item> = Item.fetchRequest()
         
-        loadItem()
         
         
     }
@@ -66,6 +69,7 @@ class ToDoViewController: UITableViewController {
             let newItem = Item(context: self.context)
             newItem.title = textField.text!
             newItem.done = false
+            newItem.parentCategory = self.selectedCategory
             self.itemArray.append(newItem)
             self.tableView.reloadData()
             self.saveItem()
@@ -111,7 +115,7 @@ extension ToDoViewController : UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let request : NSFetchRequest <Item> = Item.fetchRequest()
         request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
-
+        
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         loadItem(with: request)
         //        do{
@@ -120,14 +124,15 @@ extension ToDoViewController : UISearchBarDelegate {
         //        }catch{
         //            print("\(error)")
         //        }
-
+        
     }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text?.count == 0{
             loadItem()
             DispatchQueue.main.async {
-            searchBar.resignFirstResponder()
+                searchBar.resignFirstResponder()
             }
         }
     }
 }
+
