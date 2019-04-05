@@ -7,24 +7,78 @@
 //
 
 import UIKit
-
+import CoreData
 class CategoryTableViewController: UITableViewController {
-
+var categories = [(Category)]()
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadCategories()
+    }
+    //MARK - TABLEVIEW DELEGATE Method
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "goToItem", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! ToDoViewController
+        
+        if let indexPath = tableView.indexPathForSelectedRow {
+            destinationVC.selectedCategory = categories[indexPath.row]
+        }
     }
     //MARK: - TABLEVIEW DATASOURCE METHODS
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return categories.count
+    }
     
-    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+        
+        cell.textLabel?.text = categories[indexPath.row].name
+        return cell
+    }
     //MARK - DATA MANIPULATE METHOD
-    
+    func saveCategories() {
+        do {
+            try context.save()
+        }catch{
+            print("\(error)")
+        }
+        tableView.reloadData()
+    }
+    func loadCategories() {
+        let request : NSFetchRequest<Category> = Category.fetchRequest()
+        do {
+            categories = try context.fetch(request)
+        }catch{
+            print("\(error)")
+        }
+        tableView.reloadData()
+    }
     
     //MARK - ADD NEW CATEGORY
     @IBAction func addPressed(_ sender: UIBarButtonItem) {
+        var textFiled = UITextField()
+        let alert = UIAlertController (title: "Add New Category", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction (title: "Add", style: .default) { (action) in
+            let newCategory = Category(context: self.context)
+            newCategory.name = textFiled.text!
+            self.categories.append(newCategory)
+            self.saveCategories()
+            
+            }
+        alert.addAction(action)
+        alert.addTextField(configurationHandler: { (field) in
+            textFiled = field
+            textFiled.placeholder = "Add a New Category"
+        })
+    present(alert, animated: true, completion: nil)
     }
+
     
     
     
-    
-    //MARK - TABLEVIEW DELEGATE METHODS
 }
+
