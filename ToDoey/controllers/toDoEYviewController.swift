@@ -52,15 +52,19 @@ class ToDoViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        if let item = todoItems?[indexPath.row] {
+            do {
+                try realm.write {
+                    item.done = !item.done
+                }
+            }catch {
+                print("Error saving done status, \(error)")
+            }
+        }
         
-        
-        //        saveItem()
         
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        //        todoItems[indexPath.row].done = !todoItems[indexPath.row].done
-        
-        
+        tableView.reloadData()
         
     }
     //TODO: MARK-Add new items
