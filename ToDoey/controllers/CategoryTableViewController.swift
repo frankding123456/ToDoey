@@ -8,12 +8,17 @@
 
 import UIKit
 import CoreData
+import RealmSwift
+
 class CategoryTableViewController: UITableViewController {
-var categories = [(Category)]()
+    var categories = [(Category)]()
+    
+    let realm = try! Realm()
+    
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadCategories()
+//        loadCategories()
     }
     //MARK - TABLEVIEW DELEGATE Method
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -39,23 +44,25 @@ var categories = [(Category)]()
         return cell
     }
     //MARK - DATA MANIPULATE METHOD
-    func saveCategories() {
+    func save(category : Category) {
         do {
-            try context.save()
+            try realm.write{
+                realm.add(category)
+            }
         }catch{
             print("\(error)")
         }
         tableView.reloadData()
     }
-    func loadCategories() {
-        let request : NSFetchRequest<Category> = Category.fetchRequest()
-        do {
-            categories = try context.fetch(request)
-        }catch{
-            print("\(error)")
-        }
-        tableView.reloadData()
-    }
+//    func loadCategories() {
+//        let request : NSFetchRequest<Category> = Category.fetchRequest()
+//        do {
+//            categories = try context.fetch(request)
+//        }catch{
+//            print("\(error)")
+//        }
+//        tableView.reloadData()
+//    }
     
     //MARK - ADD NEW CATEGORY
     @IBAction func addPressed(_ sender: UIBarButtonItem) {
@@ -63,22 +70,23 @@ var categories = [(Category)]()
         let alert = UIAlertController (title: "Add New Category", message: "", preferredStyle: .alert)
         
         let action = UIAlertAction (title: "Add", style: .default) { (action) in
-            let newCategory = Category(context: self.context)
+            let newCategory = Category()
             newCategory.name = textFiled.text!
             self.categories.append(newCategory)
-            self.saveCategories()
+            self.save(category: newCategory)
             
-            }
+        }
         alert.addAction(action)
         alert.addTextField(configurationHandler: { (field) in
             textFiled = field
             textFiled.placeholder = "Add a New Category"
         })
-    present(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
-
+    
     
     
     
 }
+
 
