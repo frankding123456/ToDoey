@@ -17,8 +17,10 @@ class ToDoViewController: SwipeTableViewController {
         }
     }
     
+
     var todoItems : Results<Item>?
     
+    @IBOutlet weak var searchBarOutlet: UISearchBar!
     
     //var itemArray = ["Find Mike", "Buy Eggos", "Destroy Demogormon"]
     
@@ -29,6 +31,30 @@ class ToDoViewController: SwipeTableViewController {
         //        let request : NSFetchRequest<Item> = Item.fetchRequest()
         
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+         title = selectedCategory?.name
+        
+        guard let colourHex = selectedCategory?.colour else {fatalError()}
+        
+        updateNavBar(withHexCode: colourHex)
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+       
+        updateNavBar(withHexCode: "00FFE8")
+    }
+    
+    func updateNavBar (withHexCode colourHexCode : String) {
+        guard let navBar = navigationController?.navigationBar else {fatalError()}
+        guard let navBarColor = UIColor(hexString: colourHexCode) else {fatalError()}
+        navBar.tintColor = ContrastColorOf(navBarColor, returnFlat: true)
+        navBar.barTintColor = navBarColor
+        navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor : ContrastColorOf(navBarColor, returnFlat: true)]
+        searchBarOutlet.barTintColor = navBarColor
+       
     }
     
     //TODO: MARK--tableView datasource methods
@@ -50,6 +76,7 @@ class ToDoViewController: SwipeTableViewController {
         if  let colour = UIColor(hexString: selectedCategory!.colour)?.darken(byPercentage: CGFloat(indexPath.row)/CGFloat(todoItems!.count)) {
             cell.backgroundColor = colour
             cell.textLabel?.textColor = ContrastColorOf(colour, returnFlat: true)
+            
         }
         return cell
     }

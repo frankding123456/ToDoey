@@ -46,9 +46,12 @@ class CategoryTableViewController: SwipeTableViewController {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
 //        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath) as! SwipeTableViewCell
 //        cell.delegate = self
-        
-        cell.textLabel?.text = categories?[indexPath.row].name ?? "No Item Added"
-        cell.backgroundColor = UIColor(hexString: categories?[indexPath.row].colour ?? "EC99D0")
+        if let category = categories?[indexPath.row] {
+        cell.textLabel?.text = category.name
+            guard let categoryColor = UIColor(hexString: category.colour) else {fatalError()}
+        cell.backgroundColor = categoryColor
+            cell.textLabel?.textColor = ContrastColorOf(categoryColor, returnFlat: true)
+    }
         return cell
     }
     //MARK - DATA MANIPULATE METHOD
