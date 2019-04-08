@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import CoreData
 import RealmSwift
+import ChameleonFramework
 
 class CategoryTableViewController: SwipeTableViewController {
     var categories : Results<Category>!
@@ -48,6 +48,7 @@ class CategoryTableViewController: SwipeTableViewController {
 //        cell.delegate = self
         
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No Item Added"
+        cell.backgroundColor = UIColor.randomFlat
         return cell
     }
     //MARK - DATA MANIPULATE METHOD
