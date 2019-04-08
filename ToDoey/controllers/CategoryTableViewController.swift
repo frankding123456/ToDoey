@@ -48,7 +48,7 @@ class CategoryTableViewController: SwipeTableViewController {
 //        cell.delegate = self
         
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No Item Added"
-        cell.backgroundColor = UIColor.randomFlat
+        cell.backgroundColor = UIColor(hexString: categories?[indexPath.row].colour ?? "EC99D0")
         return cell
     }
     //MARK - DATA MANIPULATE METHOD
@@ -93,6 +93,7 @@ class CategoryTableViewController: SwipeTableViewController {
         let action = UIAlertAction (title: "Add", style: .default) { (action) in
             let newCategory = Category()
             newCategory.name = textFiled.text!
+            newCategory.colour = UIColor.randomFlat.hexValue()
             
             self.save(category: newCategory)
             
