@@ -8,7 +8,7 @@
 
 import UIKit
 import RealmSwift
-class ToDoViewController: UITableViewController {
+class ToDoViewController: SwipeTableViewController {
     let realm = try! Realm()
     var selectedCategory : Category? {
         didSet {
@@ -36,8 +36,7 @@ class ToDoViewController: UITableViewController {
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
-        
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
         if let item = todoItems?[indexPath.row] {
             
             cell.textLabel?.text = item.title
@@ -48,6 +47,18 @@ class ToDoViewController: UITableViewController {
         }
         
         return cell
+    }
+    
+    override func updateModel(at indexPath: IndexPath) {
+        if let item = todoItems?[indexPath.row] {
+            do{
+                try realm.write {
+                    realm.delete(item)
+                }
+            }catch{
+                print("Erroe deleting Item, \(error)")
+            }
+        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -136,13 +147,13 @@ extension ToDoViewController : UISearchBarDelegate {
         todoItems = todoItems?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "dateCreated", ascending: true)
         
         tableView.reloadData()
-
+        
     }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text?.count == 0{
             loadItem()
             DispatchQueue.main.async {
-            searchBar.resignFirstResponder()
+                searchBar.resignFirstResponder()
             }
         }
     }
